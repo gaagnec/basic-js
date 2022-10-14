@@ -1,53 +1,52 @@
-let arr = [
-  ['David Abram'],
-  ['Robin Attfield'],
-  'Thomas Berry',
-  ['Paul R.Ehrlich'],
-  'donna Haraway',
-  ' BrIaN_gOodWiN  ',
-  {
-    0: 'Serenella Iovino',
-  },
-  'Erazim Kohak',
-  '  val_plumwood',
-];
+transform([2, '--double-next', 1, 2, 3, 4, 5]); //=> [1, 2, 3, 4, 4, 5]
+transform([1, 2, 3, '--discard-prev', 4, 5]); //=> [1, 2, 4, 5]
+transform([1, 2, 3, '--discard-next', 1337, '--double-prev', 4, 5]); //=> [1, 2, 3, 4, 5]
+transform([1, 2, 3, '--double-next', 1337, '--discard-prev', 4, 5]); //=> [1, 2, 3, 1337, 4, 5]
+transform([1, 2, 3, '--discard-next', 1337, '--double-prev', 4, 5]); //=> [1, 2, 3, 4, 5]
+function transform(arr) {
+  let doubleNext = '--double-next';
+  let doublePrev = '--double-prev';
+  let discardPrev = '--discard-prev';
+  let discardNext = '--discard-next';
 
-function createDreamTeam(members) {
-  let clubName = [];
-  let result = '';
+  if (!Array.isArray(arr))
+    throw new Error("'arr' parameter must be an instance of the Array!");
+  let arrFirst = arr.slice();
+  console.log(arrFirst);
+  let newArr = [];
 
-  if (!Array.isArray(members) || members.length < 1) return false;
-
-  for (let key of Object.values(members)) {
-    if (typeof key == 'string') {
-      key = key.trim();
-      clubName = clubName.concat(key[0].toUpperCase());
+  arrFirst.map((item, index, array) => {
+    if (item == doubleNext) {
+      if (index != 0 && index != array.length - 1) {
+        array.splice(index, 1, array[index + 1]);
+      } else array.splice(index, 1, 'temp');
     }
-    // return result;
-  }
+    if (item == doublePrev) {
+      if (index != 0 && index != array.length - 1) {
+        array.splice(index, 1, array[index - 1]);
+      } else array.splice(index, 1, 'temp');
+    }
 
-  clubName.sort();
-  result = clubName.join('');
-  //   result.sort();
-  console.log(result);
+    if (item == discardNext) {
+      if (index != 0 && index != array.length - 1) {
+        array.splice(index, 2, 'temp');
+      } else array.splice(index, 1, 'temp');
+    }
+    if (item == discardPrev) {
+      if (index != 0 && index != array.length - 1) {
+        array.splice(index - 1, 2);
+      } else array.splice(index, 1, 'temp');
+    }
 
-  return result.length > 0 ? result.toUpperCase() : false;
-  console.log(result.length); //BDETV
+    return item;
+  });
+  console.log(arrFirst);
+  arrFirst.map((item, index, array) => {
+    if (item != 'temp') {
+      newArr = newArr.concat(array[index]);
+    }
+  });
+
+  console.log('new:  ', newArr);
+  return newArr;
 }
-
-console.log(createDreamTeam(arr));
-
-//   lenCount(arr);
-
-//   function lenCount(arr) {
-//     for (let key of arr) {
-//       if (Array.isArray(key)) {
-//         {
-//           count++;
-//           lenCount(key);
-//         }
-//       } else count++;
-//     }
-//     return count;
-//   }
-//   return count;
