@@ -1,52 +1,26 @@
-transform([2, '--double-next', 1, 2, 3, 4, 5]); //=> [1, 2, 3, 4, 4, 5]
-transform([1, 2, 3, '--discard-prev', 4, 5]); //=> [1, 2, 4, 5]
-transform([1, 2, 3, '--discard-next', 1337, '--double-prev', 4, 5]); //=> [1, 2, 3, 4, 5]
-transform([1, 2, 3, '--double-next', 1337, '--discard-prev', 4, 5]); //=> [1, 2, 3, 1337, 4, 5]
-transform([1, 2, 3, '--discard-next', 1337, '--double-prev', 4, 5]); //=> [1, 2, 3, 4, 5]
-function transform(arr) {
-  let doubleNext = '--double-next';
-  let doublePrev = '--double-prev';
-  let discardPrev = '--discard-prev';
-  let discardNext = '--discard-next';
-
-  if (!Array.isArray(arr))
-    throw new Error("'arr' parameter must be an instance of the Array!");
-  let arrFirst = arr.slice();
-  console.log(arrFirst);
+let arr = [-1, 150, 190, 170, -1, -1, 160, 180];
+/*
+ The result should be [-1, 150, 160, 170, -1, -1, 180, 190]
+*/
+function sortByHeight(arr) {
+  let minusOne = [];
   let newArr = [];
-
-  arrFirst.map((item, index, array) => {
-    if (item == doubleNext) {
-      if (index != 0 && index != array.length - 1) {
-        array.splice(index, 1, array[index + 1]);
-      } else array.splice(index, 1, 'temp');
-    }
-    if (item == doublePrev) {
-      if (index != 0 && index != array.length - 1) {
-        array.splice(index, 1, array[index - 1]);
-      } else array.splice(index, 1, 'temp');
-    }
-
-    if (item == discardNext) {
-      if (index != 0 && index != array.length - 1) {
-        array.splice(index, 2, 'temp');
-      } else array.splice(index, 1, 'temp');
-    }
-    if (item == discardPrev) {
-      if (index != 0 && index != array.length - 1) {
-        array.splice(index - 1, 2);
-      } else array.splice(index, 1, 'temp');
-    }
-
-    return item;
-  });
-  console.log(arrFirst);
-  arrFirst.map((item, index, array) => {
-    if (item != 'temp') {
-      newArr = newArr.concat(array[index]);
-    }
+  console.log(arr);
+  arr.map((item, index) => {
+    if (item == -1) minusOne.push(index);
+    else newArr.push(item);
   });
 
-  console.log('new:  ', newArr);
-  return newArr;
+  console.log(minusOne);
+  console.log(newArr);
+  newArr.sort((a, b) => {
+    if (a > b) return 1;
+    if (a == b) return 0;
+    if (a < b) return -1;
+  });
+  minusOne.map((item) => {
+    newArr.splice(item, 0, -1);
+  });
+  console.log(newArr);
 }
+sortByHeight(arr);

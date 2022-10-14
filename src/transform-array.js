@@ -18,32 +18,32 @@ function transform(arr) {
   let doublePrev = '--double-prev';
   let discardPrev = '--discard-prev';
   let discardNext = '--discard-next';
+
   if (!Array.isArray(arr))
     throw new Error("'arr' parameter must be an instance of the Array!");
-
   let arrFirst = arr.slice();
   console.log(arrFirst);
   let newArr = [];
 
   arrFirst.map((item, index, array) => {
     if (item == doubleNext) {
-      if (index != 0 && index != array.length - 1) {
+      if (index != array.length - 1) {
         array.splice(index, 1, array[index + 1]);
       } else array.splice(index, 1, 'temp');
     }
     if (item == doublePrev) {
-      if (index != 0 && index != array.length - 1) {
+      if (index != 0) {
         array.splice(index, 1, array[index - 1]);
       } else array.splice(index, 1, 'temp');
     }
 
     if (item == discardNext) {
-      if (index != 0 && index != array.length - 1) {
+      if (index != array.length - 1) {
         array.splice(index, 2, 'temp');
       } else array.splice(index, 1, 'temp');
     }
     if (item == discardPrev) {
-      if (index != 0 && index != array.length - 1) {
+      if (index != 0) {
         array.splice(index - 1, 2);
       } else array.splice(index, 1, 'temp');
     }
