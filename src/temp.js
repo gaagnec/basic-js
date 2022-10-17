@@ -1,9 +1,12 @@
-let arr = '.unusual.com@usual.com';
+let arr = '00-0B-6e3-84-45-E6';
 
-function getEmailDomain(email) {
-  let pos = email.indexOf('@');
-  let result = email.slice(pos + 1);
-  return result;
+function isMAC48Address(adress) {
+  let arr = adress.split('-');
+  for (let key in arr) {
+    if (parseInt(arr[key], 16) <= 255) {
+    } else return false;
+  }
+  return true;
 }
 
-console.log(getEmailDomain(arr));
+console.log(isMAC48Address(arr));
